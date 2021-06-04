@@ -1,0 +1,12 @@
+{
+    "fileio.extension.name": "FileIO",
+    "fileio.extension.description": "让ClipCC项目获得访问电脑文件的能力（仅桌面版可用）",
+    "fileio.category.name": "FileIO",
+    "fileio.blocks.applyforfilemanagement": "申请文件管理权限",
+    "fileio.blocks.revokefilemanagement": "还回文件管理权限",
+    "fileio.blocks.hasfilemanagement": "是否拥有文件管理权限",
+    "fileio.blocks.openfileasync": "从[PATH]异步获取文件内容",
+    "fileio.blocks.openfilesync": "从[PATH]同步获取文件内容",
+    "fileio.blocks.filecontent": "文件内容",
+    "fileio.blocks.selectfile": "从文件选择器选取文件"
+}
