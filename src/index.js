@@ -2,7 +2,7 @@ const ClipCC = require('clipcc-extension');
 
 
 
-const isClipCCDesktop = (process!= undefined);
+const isClipCCDesktop = (window.process != undefined);
 if (isClipCCDesktop) {
     eval('window.electron = require("electron")');
     eval('window.fs = require("fs")');
@@ -149,7 +149,7 @@ class FileIOExtension extends ClipCC.Extension {
     }
 
     selectFile() {
-        
+
     }
     
     hasFileAccessPermission() {
