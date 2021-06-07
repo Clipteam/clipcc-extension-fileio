@@ -12,7 +12,9 @@ module.exports = {
         path: path.resolve(__dirname, 'build')
     },
     externals: {
-        'clipcc-extension': 'ClipCCExtension'
+        'clipcc-extension': 'ClipCCExtension',
+        'electron': 'commonjs electron',
+        'fs': 'commonjs fs'
     },
     plugins: [
         new CopyWebpackPlugin({
