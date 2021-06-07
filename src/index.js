@@ -159,7 +159,6 @@ class FileIOExtension extends ClipCC.Extension {
     }
 
     applyForFileManagement() {
-        if (!isClipCCDesktop) return;
         this.FileAccessPermissionLevel = remote.dialog.showMessageBoxSync(
             remote.getCurrentWindow(),
             {
@@ -174,7 +173,6 @@ class FileIOExtension extends ClipCC.Extension {
         
     }
     revokeFileManagement() {
-        if (!isClipCCDesktop) return;
         this.FileAccessPermissionLevel = 0;
     }
 
@@ -183,7 +181,6 @@ class FileIOExtension extends ClipCC.Extension {
     }
     
     openFileSync(PATH) {
-        if (!isClipCCDesktop) return
         if (!this.hasFileAccessPermission()) return '*ERROR: NO PERMISSON!'
         let file
         try {
@@ -196,7 +193,6 @@ class FileIOExtension extends ClipCC.Extension {
     }
 
     openFileAsync(PATH) {
-        if (!isClipCCDesktop) return
         if (!this.hasFileAccessPermission()) {
             this.fileContent = '*ERROR: NO PERMISSON!'
             return
