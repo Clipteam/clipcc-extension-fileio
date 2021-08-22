@@ -1,12 +1,17 @@
 {
     "fileio.extension.name": "FileIO",
-    "fileio.extension.description": "让ClipCC项目获得访问电脑文件的能力（仅桌面版可用）",
+    "fileio.extension.description": "Let ClipCC project was the ability to access computer files (Desktop Only)",
     "fileio.category.name": "FileIO",
-    "fileio.blocks.applyforfilemanagement": "申请文件管理权限",
-    "fileio.blocks.revokefilemanagement": "还回文件管理权限",
-    "fileio.blocks.hasfilemanagement": "是否拥有文件管理权限",
-    "fileio.blocks.openfileasync": "从[PATH]异步获取文件内容",
-    "fileio.blocks.openfilesync": "从[PATH]同步获取文件内容",
-    "fileio.blocks.filecontent": "文件内容",
-    "fileio.blocks.selectfile": "从文件选择器选取文件"
+    "fileio.blocks.applyforfilemanagement.message": "apply for file fanagement permission",
+    "fileio.blocks.revokefilemanagement.message": "revoke file Management permission",
+    "fileio.blocks.hasfilemanagement.message": "has file management permission?",
+    "fileio.blocks.openfileasync.message": "async obtain file content from [PATH]",
+    "fileio.blocks.openfilesync.message": "sync obtain file content from [PATH]",
+    "fileio.blocks.filecontent.message": "file content",
+    "fileio.blocks.selectfile.message": "select a file from the file chooser",
+    "fileio.blocks.deletefile.message": "delete file [PATH]",
+    "fileio.blocks.userselectpath.message": "user selects a file path",
+    "fileio.blocks.createfile.message": "create file[PATH]",
+    "fileio.blocks.writefile.message": "write file [PATH] file content [CONTENT]",
+    "fileio.blocks.fileexists.message": "file [PATH] exist?"
 }

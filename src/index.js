@@ -5,7 +5,7 @@ const { remote }  = require('electron');
 
 
 class FileIOExtension extends ClipCC.Extension {
-    init() {
+    onInit() {
         this.FileAccessPermissionLevel = 0
         this.fileContent = ''
         this.userSelectPath = ''
@@ -20,7 +20,7 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.applyforfilemanagement',
             type: ClipCC.Type.BlockType.COMMAND,
-            messageId: 'fileio.blocks.applyforfilemanagement',
+            messageId: 'fileio.blocks.applyforfilemanagement.message',
             categoryId: 'fileio.category',
             function: () => this.applyForFileManagement()
         })
@@ -28,7 +28,7 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.revokefilemanagement',
             type: ClipCC.Type.BlockType.COMMAND,
-            messageId: 'fileio.blocks.revokefilemanagement',
+            messageId: 'fileio.blocks.revokefilemanagement.message',
             categoryId: 'fileio.category',
             function: () => this.revokeFileManagement()
         })
@@ -36,7 +36,7 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.hasfilemanagement',
             type: ClipCC.Type.BlockType.BOOLEAN,
-            messageId: 'fileio.blocks.hasfilemanagement',
+            messageId: 'fileio.blocks.hasfilemanagement.message',
             categoryId: 'fileio.category',
             function: () => this.hasFileManagement()
         })
@@ -44,11 +44,11 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.openfileasync',
             type: ClipCC.Type.BlockType.COMMAND,
-            messageId: 'fileio.blocks.openfileasync',
+            messageId: 'fileio.blocks.openfileasync.message',
             categoryId: 'fileio.category',
             argument: {
                 PATH: {
-                    type: ClipCC.Type.ArgumentType.STRING,
+                    type: ClipCC.Type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
@@ -58,11 +58,11 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.openfilesync',
             type: ClipCC.Type.BlockType.REPORTER,
-            messageId: 'fileio.blocks.openfilesync',
+            messageId: 'fileio.blocks.openfilesync.message',
             categoryId: 'fileio.category',
             argument: {
                 PATH: {
-                    type: ClipCC.Type.ArgumentType.STRING,
+                    type: ClipCC.Type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
@@ -72,11 +72,11 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.createfile',
             type: ClipCC.Type.BlockType.COMMAND,
-            messageId: 'fileio.blocks.createfile',
+            messageId: 'fileio.blocks.createfile.message',
             categoryId: 'fileio.category',
             argument: {
                 PATH: {
-                    type: ClipCC.Type.ArgumentType.STRING,
+                    type: ClipCC.Type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
@@ -86,15 +86,15 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.writefile',
             type: ClipCC.Type.BlockType.COMMAND,
-            messageId: 'fileio.blocks.writefile',
+            messageId: 'fileio.blocks.writefile.message',
             categoryId: 'fileio.category',
             argument: {
                 PATH: {
-                    type: ClipCC.Type.ArgumentType.STRING,
+                    type: ClipCC.Type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 },
                 CONTENT: {
-                    type: ClipCC.Type.ArgumentType.STRING,
+                    type: ClipCC.Type.ParameterType.STRING,
                     default: 'ClipCC Yes!'
                 }
             },
@@ -104,11 +104,11 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.deletefile',
             type: ClipCC.Type.BlockType.COMMAND,
-            messageId: 'fileio.blocks.deletefile',
+            messageId: 'fileio.blocks.deletefile.message',
             categoryId: 'fileio.category',
             argument: {
                 PATH: {
-                    type: ClipCC.Type.ArgumentType.STRING,
+                    type: ClipCC.Type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
@@ -118,7 +118,7 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.filecontent',
             type: ClipCC.Type.BlockType.REPORTER,
-            messageId: 'fileio.blocks.filecontent',
+            messageId: 'fileio.blocks.filecontent.message',
             categoryId: 'fileio.category',
             function: () => this.fileContent
         })
@@ -126,11 +126,11 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.fileexists',
             type: ClipCC.Type.BlockType.BOOLEAN,
-            messageId: 'fileio.blocks.fileexists',
+            messageId: 'fileio.blocks.fileexists.message',
             categoryId: 'fileio.category',
             argument: {
                 PATH: {
-                    type: ClipCC.Type.ArgumentType.STRING,
+                    type: ClipCC.Type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 },
             },
@@ -140,7 +140,7 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.selectfile',
             type: ClipCC.Type.BlockType.COMMAND,
-            messageId: 'fileio.blocks.selectfile',
+            messageId: 'fileio.blocks.selectfile.message',
             categoryId: 'fileio.category',
             function: () => this.selectFile()
         })
@@ -148,17 +148,19 @@ class FileIOExtension extends ClipCC.Extension {
         ClipCC.API.addBlock({
             opcode: 'fileio.blocks.userselectpath',
             type: ClipCC.Type.BlockType.REPORTER,
-            messageId: 'fileio.blocks.userselectpath',
+            messageId: 'fileio.blocks.userselectpath.message',
             categoryId: 'fileio.category',
             function: () => this.userSelectPath
         })
     }
 
-    uninit() {
+    onUnit() {
         ClipCC.API.removeCategory('fileio.category');
     }
 
     applyForFileManagement() {
+        if (this.permissionDialogTime > Date.now() + 300000) return
+        this.permissionDialogTime = Date.now()
         this.FileAccessPermissionLevel = remote.dialog.showMessageBoxSync(
             remote.getCurrentWindow(),
             {
@@ -243,7 +245,7 @@ class FileIOExtension extends ClipCC.Extension {
             }
         )
         if (!result) return
-        this.userSelectPath = result
+        this.userSelectPath = result[0]
     }
     
     hasFileAccessPermission() {
