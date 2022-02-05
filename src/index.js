@@ -1,153 +1,153 @@
-const ClipCC = require('clipcc-extension');
+const { Extension, type, api } = require('clipcc-extension');
 const fs = require('fs');
 const { remote }  = require('electron');
 
 
 
-class FileIOExtension extends ClipCC.Extension {
+class FileIOExtension extends Extension {
     onInit() {
         this.FileAccessPermissionLevel = 0
         this.fileContent = ''
         this.userSelectPath = ''
 
-        ClipCC.API.addCategory({
+        api.addCategory({
             categoryId: 'fileio.category',
             messageId: 'fileio.category.name',
             color: '#339900'
         })
 
         // 申请文件管理权限
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.applyforfilemanagement',
-            type: ClipCC.Type.BlockType.COMMAND,
+            type: type.BlockType.COMMAND,
             messageId: 'fileio.blocks.applyforfilemanagement.message',
             categoryId: 'fileio.category',
             function: () => this.applyForFileManagement()
         })
         // 还回文件管理权限
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.revokefilemanagement',
-            type: ClipCC.Type.BlockType.COMMAND,
+            type: type.BlockType.COMMAND,
             messageId: 'fileio.blocks.revokefilemanagement.message',
             categoryId: 'fileio.category',
             function: () => this.revokeFileManagement()
         })
         // 是否拥有外部权限
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.hasfilemanagement',
-            type: ClipCC.Type.BlockType.BOOLEAN,
+            type: type.BlockType.BOOLEAN,
             messageId: 'fileio.blocks.hasfilemanagement.message',
             categoryId: 'fileio.category',
             function: () => this.hasFileManagement()
         })
         // 从[PATH]异步获取文件内容
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.openfileasync',
-            type: ClipCC.Type.BlockType.COMMAND,
+            type: type.BlockType.COMMAND,
             messageId: 'fileio.blocks.openfileasync.message',
             categoryId: 'fileio.category',
-            argument: {
+            param: {
                 PATH: {
-                    type: ClipCC.Type.ParameterType.STRING,
+                    type: type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
             function: args => this.openFileAsync(args.PATH)
         })
         // 从[PATH]同步获取文件内容
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.openfilesync',
-            type: ClipCC.Type.BlockType.REPORTER,
+            type: type.BlockType.REPORTER,
             messageId: 'fileio.blocks.openfilesync.message',
             categoryId: 'fileio.category',
-            argument: {
+            param: {
                 PATH: {
-                    type: ClipCC.Type.ParameterType.STRING,
+                    type: type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
             function: args => this.openFileSync(args.PATH)
         })
         // 创建文件[PATH]
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.createfile',
-            type: ClipCC.Type.BlockType.COMMAND,
+            type: type.BlockType.COMMAND,
             messageId: 'fileio.blocks.createfile.message',
             categoryId: 'fileio.category',
-            argument: {
+            param: {
                 PATH: {
-                    type: ClipCC.Type.ParameterType.STRING,
+                    type: type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
             function: args => this.createFile(args.PATH)
         })
         // 写入文件[PATH]内容为[CONTENT]
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.writefile',
-            type: ClipCC.Type.BlockType.COMMAND,
+            type: type.BlockType.COMMAND,
             messageId: 'fileio.blocks.writefile.message',
             categoryId: 'fileio.category',
-            argument: {
+            param: {
                 PATH: {
-                    type: ClipCC.Type.ParameterType.STRING,
+                    type: type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 },
                 CONTENT: {
-                    type: ClipCC.Type.ParameterType.STRING,
+                    type: type.ParameterType.STRING,
                     default: 'ClipCC Yes!'
                 }
             },
             function: args => this.writeFile(args.PATH,args.CONTENT)
         })
         // 删除文件[PATH]
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.deletefile',
-            type: ClipCC.Type.BlockType.COMMAND,
+            type: type.BlockType.COMMAND,
             messageId: 'fileio.blocks.deletefile.message',
             categoryId: 'fileio.category',
-            argument: {
+            param: {
                 PATH: {
-                    type: ClipCC.Type.ParameterType.STRING,
+                    type: type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 }
             },
             function: args => this.deleteFile(args.PATH)
         })
         // 文件内容
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.filecontent',
-            type: ClipCC.Type.BlockType.REPORTER,
+            type: type.BlockType.REPORTER,
             messageId: 'fileio.blocks.filecontent.message',
             categoryId: 'fileio.category',
             function: () => this.fileContent
         })
         // 文件[PATH]是否存在？
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.fileexists',
-            type: ClipCC.Type.BlockType.BOOLEAN,
+            type: type.BlockType.BOOLEAN,
             messageId: 'fileio.blocks.fileexists.message',
             categoryId: 'fileio.category',
-            argument: {
+            param: {
                 PATH: {
-                    type: ClipCC.Type.ParameterType.STRING,
+                    type: type.ParameterType.STRING,
                     default: 'ClipCC.txt'
                 },
             },
             function: args => this.fileExists(args.PATH)
         })
         // 从文件选择器选取文件
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.selectfile',
-            type: ClipCC.Type.BlockType.COMMAND,
+            type: type.BlockType.COMMAND,
             messageId: 'fileio.blocks.selectfile.message',
             categoryId: 'fileio.category',
             function: () => this.selectFile()
         })
         // 用户选择的文件路径
-        ClipCC.API.addBlock({
+        api.addBlock({
             opcode: 'fileio.blocks.userselectpath',
-            type: ClipCC.Type.BlockType.REPORTER,
+            type: type.BlockType.REPORTER,
             messageId: 'fileio.blocks.userselectpath.message',
             categoryId: 'fileio.category',
             function: () => this.userSelectPath
@@ -155,7 +155,7 @@ class FileIOExtension extends ClipCC.Extension {
     }
 
     onUnit() {
-        ClipCC.API.removeCategory('fileio.category');
+        api.removeCategory('fileio.category');
     }
 
     applyForFileManagement() {
