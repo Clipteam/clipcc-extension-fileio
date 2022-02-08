@@ -1,11 +1,24 @@
 const { Extension, type, api } = require('clipcc-extension');
-const fs = require('fs');
-const { remote }  = require('electron');
+let status = 'loading';
+try {
+    const fs = require('fs');
+    console.log(require('electron'), fs);
+    const { remote }  = require('electron');
+    if (!fs || !remote) throw new Error('Unable to load required modules');
+    status = 'ready';
+} catch (e) {
+    status = 'error';
+}
 
 
 
 class FileIOExtension extends Extension {
     onInit() {
+        if (status !== 'ready') {
+            alert('electron is not exist in this environment, Please use desktop version instead.')
+            throw new Error('electron is not exist in this environment, Please use desktop version instead.')
+        }
+
         this.FileAccessPermissionLevel = 0
         this.fileContent = ''
         this.userSelectPath = ''
