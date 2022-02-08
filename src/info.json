@@ -1,7 +1,7 @@
 {
     "id": "fileio.extension",
     "author": "frank_782",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "icon": "assets/icon.png",
     "inset_icon": "assets/inset_icon.svg",
     "api": 1

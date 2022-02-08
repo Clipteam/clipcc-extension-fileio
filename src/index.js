@@ -1,29 +1,16 @@
 const { Extension, type, api } = require('clipcc-extension');
-let status = 'loading';
-let remote = null;
-let fs = null;
-initialize();
+let remote, fs = null;
 
-function initialize() {
-    try {
-        // Electron 15 removed the support of remote.
-        // So If the user is using electron 14 or lower, we will use the old remote.
-        remote = require('@electron/remote');
-        if (!remote) remote = require('electron').remote;
-        if (!remote || !fs) {
-            status = 'error';
-            return;
-        }
-        status = 'ready';
-    } catch (e) {
-        status = 'error';
-    }
-}
 class FileIOExtension extends Extension {
     onInit() {
-        if (status !== 'ready') {
-            alert('electron is not exist in this environment, Please use desktop version instead.')
-            throw new Error('electron is not exist in this environment, Please use desktop version instead.')
+        try {
+            fs = require('fs')
+            remote = require('@electron/remote')
+            if (!remote || !fs) throw new Error('remote not found')
+        } catch (e) {
+            console.log(e)
+            alert('FileIO Extension requires electron and fs module, please ensure they are exist in your environment!')
+            throw new Error(e);
         }
 
         this.FileAccessPermissionLevel = 0
