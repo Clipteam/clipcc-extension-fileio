@@ -1,11 +1,18 @@
 const { Extension, type, api } = require('clipcc-extension');
-const fs = require('fs');
-const { remote }  = require('electron');
-
-
+let remote, fs = null;
 
 class FileIOExtension extends Extension {
     onInit() {
+        try {
+            fs = require('fs')
+            remote = require('@electron/remote')
+            if (!remote || !fs) throw new Error('remote not found')
+        } catch (e) {
+            console.log(e)
+            alert('FileIO Extension requires electron and fs module, please ensure they are exist in your environment!')
+            throw new Error(e);
+        }
+
         this.FileAccessPermissionLevel = 0
         this.fileContent = ''
         this.userSelectPath = ''
