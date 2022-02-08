@@ -21,6 +21,7 @@ const config = {
     externals: {
         'clipcc-extension': 'ClipCCExtension',
         'electron': 'commonjs electron',
+        '@electron/remote': 'commonjs @electron/remote',
         'fs': 'commonjs fs'
     },
     externalsType: 'global',

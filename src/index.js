@@ -1,17 +1,24 @@
 const { Extension, type, api } = require('clipcc-extension');
 let status = 'loading';
-try {
-    const fs = require('fs');
-    console.log(require('electron'), fs);
-    const { remote }  = require('electron');
-    if (!fs || !remote) throw new Error('Unable to load required modules');
-    status = 'ready';
-} catch (e) {
-    status = 'error';
+let remote = null;
+let fs = null;
+initialize();
+
+function initialize() {
+    try {
+        // Electron 15 removed the support of remote.
+        // So If the user is using electron 14 or lower, we will use the old remote.
+        remote = require('@electron/remote');
+        if (!remote) remote = require('electron').remote;
+        if (!remote || !fs) {
+            status = 'error';
+            return;
+        }
+        status = 'ready';
+    } catch (e) {
+        status = 'error';
+    }
 }
-
-
-
 class FileIOExtension extends Extension {
     onInit() {
         if (status !== 'ready') {
